@@ -37,12 +37,11 @@ a{color:#6547d8}
 <header>
 <div class="brand">= EqualSpace</div>
 <nav>
-<button type="button" onclick="openAccount()">Account</button>
 <button data-page="home">Home</button>
 <button data-page="learn">Learn</button>
 <button data-page="quiz">Quiz</button>
 <button data-page="community">Community</button>
-<button data-page="account">Account</button>
+<button type="button" onclick="openAccount()">Account</button>
 <button data-page="feedback">Feedback</button>
 </nav>
 <span id="user-label">Guest mode</span>
@@ -184,14 +183,28 @@ document.querySelectorAll("[data-page]").forEach(button => {
       return;
     }
 
-    document.querySelectorAll("main section").forEach(section => {
-      section.classList.remove("active");
-    });
+    document.addEventListener("click", function(event) {
+  const button = event.target.closest("[data-page]");
+  if (!button) return;
 
-    target.classList.add("active");
-    document.getElementById("notice").classList.add("hidden");
-    window.scrollTo(0, 0);
+  const pageId = button.getAttribute("data-page");
+  const target = document.getElementById(pageId);
+
+  if (!target) {
+    alert("Page not found: " + pageId);
+    return;
+  }
+
+  document.querySelectorAll("main section").forEach(function(section) {
+    section.classList.remove("active");
   });
+
+  target.classList.add("active");
+
+  const noticeBox = document.getElementById("notice");
+  if (noticeBox) noticeBox.classList.add("hidden");
+
+  window.scrollTo(0, 0);
 });
 
 

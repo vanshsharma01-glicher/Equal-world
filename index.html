@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EqualSpace helps people learn about gender equality and equal opportunities.">
+  <title>EqualSpace — Equality for Everyone</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="EqualSpace home"><span class="brand-mark">=</span> EqualSpace</a>
+  <nav>
+    <button class="nav-btn active" data-view="home">Home</button>
+    <button class="nav-btn" data-view="learn">Learn</button>
+    <button class="nav-btn" data-view="quiz">Quiz</button>
+    <button class="nav-btn" data-view="community">Community</button>
+    <button class="nav-btn hidden" id="admin-nav" data-view="admin">Admin</button>
+  </nav>
+  <div class="account">
+    <span id="user-label" class="muted">Guest mode</span>
+    <button id="auth-open" class="button button-small">Login / Sign up</button>
+    <button id="logout-btn" class="button button-small button-quiet hidden">Log out</button>
+  </div>
+</header>
+
+<main class="container">
+  <div id="notice" class="notice hidden" role="status"></div>
+
+  <section id="view-home" class="view">
+    <div class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">UNITED NATIONS SDG 5</p>
+        <h1>Equality is not a privilege.<br><span>It is everyone’s right.</span></h1>
+        <p class="hero-text">Learn, question stereotypes, and take small actions that help create a fairer world for every gender.</p>
+        <div class="hero-actions">
+          <button class="button" data-go="learn">Explore learning hub <span aria-hidden="true">→</span></button>
+          <button class="button button-outline" data-go="quiz">Take the equality quiz</button>
+        </div>
+        <p class="tiny muted">An educational student project aligned with Sustainable Development Goal 5.</p>
+      </div>
+      <div class="hero-art" aria-label="Illustration of diverse people standing together">
+        <div class="sun"></div><div class="art-equal">EQUALITY<br><span>FOR ALL</span></div>
+        <div class="person person-one"></div><div class="person person-two"></div><div class="person person-three"></div>
+        <div class="art-caption">Different people.<br>Equal dignity.</div>
+      </div>
+    </div>
+    <div class="section-heading">
+      <div><p class="eyebrow">WHY IT MATTERS</p><h2>Equality starts with awareness</h2></div>
+      <p class="muted heading-note">Understand the issue. Challenge assumptions. Make a difference.</p>
+    </div>
+    <div class="card-grid three">
+      <article class="info-card"><div class="icon-tile lilac">↗</div><h3>Equal opportunities</h3><p>Everyone deserves fair access to education, work, leadership, and decision-making.</p></article>
+      <article class="info-card"><div class="icon-tile peach">◎</div><h3>Challenge stereotypes</h3><p>Skills, interests, and ambitions should not be limited by gender expectations.</p></article>
+      <article class="info-card"><div class="icon-tile mint">♡</div><h3>Respect and safety</h3><p>Build communities where people are treated with dignity and can speak up safely.</p></article>
+    </div>
+    <div class="callout"><div><p class="eyebrow">YOUR LEARNING JOURNEY</p><h2>Small steps can shift mindsets.</h2><p>Complete a lesson, test your understanding, and share a constructive idea.</p></div><button class="button" data-go="learn">Start learning →</button></div>
+  </section>
+
+  <section id="view-learn" class="view hidden">
+    <div class="page-heading"><p class="eyebrow">LEARNING HUB</p><h1>Explore equality, one topic at a time.</h1><p>Short, practical lessons to help you recognise unfair assumptions and support equal opportunities.</p></div>
+    <div id="lesson-grid" class="card-grid three"></div>
+    <div id="lesson-detail" class="lesson-detail hidden"></div>
+  </section>
+
+  <section id="view-quiz" class="view hidden">
+    <div class="page-heading"><p class="eyebrow">KNOWLEDGE CHECK</p><h1>Gender equality quiz</h1><p>Choose the best answer. The aim is to learn, not to judge anyone.</p></div>
+    <div class="quiz-layout">
+      <div class="quiz-card">
+        <div class="quiz-top"><span id="quiz-count">Question 1</span><span id="quiz-progress-label">0% complete</span></div>
+        <div class="progress"><div id="quiz-progress"></div></div>
+        <h2 id="question-text">Loading quiz…</h2>
+        <div id="answers" class="answers"></div>
+        <div id="answer-explanation" class="explanation hidden"></div>
+        <div class="quiz-actions"><button id="next-question" class="button" disabled>Next question →</button><button id="restart-quiz" class="button button-quiet">Restart</button></div>
+      </div>
+      <aside class="side-note"><div class="icon-tile lilac">✦</div><h3>Think beyond the answer</h3><p>Gender equality means equal rights, responsibilities, and opportunities—not that everyone must be the same.</p><p class="tiny muted">Sign in to save your quiz score to your profile.</p></aside>
+    </div>
+  </section>
+
+  <section id="view-community" class="view hidden">
+    <div class="page-heading"><p class="eyebrow">COMMUNITY IDEAS</p><h1>Share a positive change.</h1><p>Submit an idea for making your classroom, campus, workplace, or community more inclusive. Posts appear publicly only after moderation.</p></div>
+    <div class="community-layout">
+      <form id="post-form" class="panel">
+        <h2>Submit an idea</h2>
+        <label for="post-title">Title</label><input id="post-title" maxlength="100" required placeholder="e.g. Make classroom roles fair for everyone">
+        <label for="post-body">Your idea</label><textarea id="post-body" rows="5" maxlength="1500" required placeholder="Describe a practical, respectful action…"></textarea>
+        <button class="button" type="submit">Submit for review</button>
+        <p class="tiny muted">Please do not include private information or identify other people without permission.</p>
+      </form>
+      <div><div class="feed-heading"><h2>Approved ideas</h2><button id="refresh-posts" class="button button-quiet button-small">Refresh</button></div><div id="post-feed" class="stack"></div></div>
+    </div>
+  </section>
+
+  <section id="view-admin" class="view hidden">
+    <div class="page-heading"><p class="eyebrow">ADMINISTRATION</p><h1>Content & community dashboard</h1><p>Review submissions and publish learning content. Only accounts assigned the admin role in the database can access this area.</p></div>
+    <div class="stats-grid">
+      <div class="stat-card"><span>Pending posts</span><strong id="stat-pending">—</strong></div>
+      <div class="stat-card"><span>Published lessons</span><strong id="stat-lessons">—</strong></div>
+      <div class="stat-card"><span>Feedback entries</span><strong id="stat-feedback">—</strong></div>
+    </div>
+    <div class="admin-layout">
+      <div class="panel"><div class="feed-heading"><h2>Posts to review</h2><button id="refresh-admin" class="button button-quiet button-small">Refresh</button></div><div id="pending-list" class="stack"></div></div>
+      <form id="lesson-form" class="panel">
+        <h2>Publish a lesson</h2>
+        <label for="lesson-title">Lesson title</label><input id="lesson-title" required maxlength="120">
+        <label for="lesson-category">Category</label><select id="lesson-category"><option>Equal education</option><option>Workplace equality</option><option>Challenge stereotypes</option><option>Respect and safety</option><option>Shared responsibilities</option></select>
+        <label for="lesson-summary">Short summary</label><textarea id="lesson-summary" rows="2" required maxlength="240"></textarea>
+        <label for="lesson-content">Lesson content</label><textarea id="lesson-content" rows="5" required maxlength="5000"></textarea>
+        <button class="button" type="submit">Publish lesson</button>
+      </form>
+    </div>
+    <div class="panel feedback-panel"><h2>Recent feedback</h2><div id="feedback-list" class="stack"></div></div>
+  </section>
+
+  <section id="view-feedback" class="view hidden">
+    <div class="page-heading"><p class="eyebrow">HELP US IMPROVE</p><h1>Send feedback</h1><p>Share suggestions about the website or its learning content.</p></div>
+    <form id="feedback-form" class="panel narrow">
+      <label for="feedback-category">Feedback type</label><select id="feedback-category"><option>Suggestion</option><option>Content correction</option><option>Accessibility</option><option>Technical issue</option></select>
+      <label for="feedback-message">Message</label><textarea id="feedback-message" rows="5" maxlength="2000" required></textarea>
+      <button class="button" type="submit">Send feedback</button>
+    </form>
+  </section>
+</main>
+
+<footer class="footer"><a class="brand" href="#"><span class="brand-mark">=</span> EqualSpace</a><p>Designed to support awareness of UN Sustainable Development Goal 5.</p><button class="text-button" data-go="feedback">Send feedback</button><span class="tiny muted">Educational project · Respect · Inclusion · Equal opportunity</span></footer>
+
+<div id="auth-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close-modal aria-label="Close">×</button>
+    <p class="eyebrow">WELCOME TO EQUALSPACE</p><h2 id="auth-title">Your learning space</h2>
+    <div class="tabs"><button id="login-tab" class="tab active">Log in</button><button id="signup-tab" class="tab">Create account</button></div>
+    <form id="auth-form">
+      <label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="email" required placeholder="you@example.com">
+      <label for="auth-password">Password</label><input id="auth-password" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters">
+      <button id="auth-submit" class="button full-width" type="submit">Log in</button>
+      <p id="auth-hint" class="tiny muted">You may need to confirm your email after creating an account.</p>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -140,6 +140,15 @@
       <p id="auth-hint" class="tiny muted">You may need to confirm your email after creating an account.</p>
     </form>
   </div>
-</div>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://tsekjsnuhrxmxshxuiym.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzZWtqc251aHJ4bXhzaHh1aXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MDQ2MjQsImV4cCI6MjEwNzA4MDYyNH0.cJQdKBoF_PtM9AOOp3aP5NGX5JhAeSj_zOo-kRxVXgU";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
 </body>
 </html>

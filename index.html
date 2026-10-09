@@ -37,6 +37,7 @@ a{color:#6547d8}
 <header>
 <div class="brand">= EqualSpace</div>
 <nav>
+<button type="button" onclick="openAccount()">Account</button>
 <button data-page="home">Home</button>
 <button data-page="learn">Learn</button>
 <button data-page="quiz">Quiz</button>
@@ -199,7 +200,7 @@ if(window.supabase && SUPABASE_KEY!=="PASTE_YOUR_ANON_PUBLIC_KEY_HERE"){
   db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  }catch(e){notice("Supabase error: "+e.message);}
 }else{
- notice("Add your Supabase anon/public key to enable login.");
+ notice("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzZWtqc251aHJ4bXhzaHh1aXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MDQ2MjQsImV4cCI6MjEwNzA4MDYyNH0.cJQdKBoF_PtM9AOOp3aP5NGX5JhAeSj_zOo-kRxVXgU");
 }
 
 /* Authentication */
@@ -366,6 +367,15 @@ $("feedback-form").addEventListener("submit",e=>{
   "Thank you! The form works, but permanent feedback storage requires a configured database table.";
  $("feedback-form").reset();
 });
+ function openAccount() {
+  document.querySelectorAll("main section").forEach(function(section) {
+    section.classList.remove("active");
+  });
+
+  document.getElementById("account").classList.add("active");
+  document.getElementById("notice").classList.add("hidden");
+  window.scrollTo(0, 0);
+ }
 </script>
 </body>
 </html>

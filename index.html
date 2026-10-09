@@ -172,14 +172,27 @@ function setUser(user){
  $("user-label").textContent=user?user.email:"Guest mode";
 }
 
-document.querySelectorAll("[data-page]").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
-  $(button.dataset.page).classList.add("active");
-  $("notice").classList.add("hidden");
-  window.scrollTo(0,0);
- });
+ 
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => {
+    const pageId = button.getAttribute("data-page");
+    const target = document.getElementById(pageId);
+
+    if (!target) {
+      alert("Page not found: " + pageId);
+      return;
+    }
+
+    document.querySelectorAll("main section").forEach(section => {
+      section.classList.remove("active");
+    });
+
+    target.classList.add("active");
+    document.getElementById("notice").classList.add("hidden");
+    window.scrollTo(0, 0);
+  });
 });
+
 
 if(window.supabase && SUPABASE_KEY!=="PASTE_YOUR_ANON_PUBLIC_KEY_HERE"){
  try{
